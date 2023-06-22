@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 
+"""
+canboat2pontos
+Converting from NMEA2000 data in canboat json format to pontos format.
+"""
+
+# pylint: disable=redefined-outer-name
+
 import sys
 import json
 import logging
 import argparse
 from typing import List, Dict, Tuple, Any
 
-from parse import compile
+import parse
 
 ## Handlers
 
@@ -70,7 +77,7 @@ HANDLERS = {
     129029: handler_129029,
 }
 
-PATTERN = compile("{timestamp} {data}")
+PATTERN = parse.compile("{timestamp} {data}")
 
 
 ## Parse command-line arguments
@@ -82,25 +89,28 @@ args = parser.parse_args()
 
 # Define some helper functions
 def create_topic(tag: str, index: int = 1, prefix: str = "PONTOS"):
+    """Assembling mqtt topic for pontos-hub ingestion"""
     return f"{prefix}/{args.vessel_id}/{tag}/{index}"
 
 
 def create_payload(timestamp: str, value: Any) -> Dict:
-    return {"timestamp": timestamp, "value": value}
+    """Creating JSON payload for pontos-hub ingestion"""
+    return json.dumps({"timestamp": timestamp, "value": value})
 
 
 ## Processing loop
 for line in sys.stdin:
     if not (res := PATTERN.parse(line)):
         logging.error(
-            f"Line {line} did not look as expected: '<timestamp> <canboat json output>'"
+            "Line %s did not look as expected: '<timestamp> <canboat json output>'",
+            line,
         )
         continue
 
     try:
         data = json.loads(res["data"])
     except json.JSONDecodeError:
-        logging.error(f"Failed to JSON decode data: {data}")
+        logging.error("Failed to JSON decode data: %s", res["data"])
         continue
 
     if pgn := data.get("pgn"):
@@ -111,4 +121,4 @@ for line in sys.stdin:
 
             sys.stdout.flush()
         else:
-            logging.warning(f"No handler found for PGN: {pgn}")
+            logging.warning("No handler found for PGN: %s", pgn)

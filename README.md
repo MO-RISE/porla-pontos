@@ -9,7 +9,7 @@ This extension provides the necessary tools to be compatible with the dtaa forma
 
 * **canboat2pontos**
 
-  Converts output from canboat's `analyzer --json` to pontos format, see [porla-nmea](https://github.com/MO-RISE/porla-nmea). Expects a single argument, the `vessel_id`. Expects input in the form `<epoch> <canboat json output>`.
+  Converts output from canboat's `analyzer --json` to pontos format, see [porla-nmea](https://github.com/MO-RISE/porla-nmea). Expects a single argument, the `vessel_id`. Expects input in the form `<epoch> <canboat json output>`. Outputs `<topic> <json payload>`, suitable for input to `mqtt-cli`, see [porla-mqtt](https://github.com/MO-RISE/porla-mqtt).
 
 ### 3rd-party tools
 
