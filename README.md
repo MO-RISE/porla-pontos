@@ -1,18 +1,44 @@
-# porla-extension-template
+# porla-pontos
 This is an extension to [`porla`](https://github.com/MO-RISE/porla)
 
 ## What
 
-What does this extensions provide?
+This extension provides the necessary tools to be compatible with the dtaa format used by [pontos-hub](https://github.com/MO-RISE/pontos-hub)
 
 ### Built-in functionality
 
-List the custom binaries that this extension adds
+* **canboat2pontos**
+
+  Converts output from canboat's `analyzer --json` to pontos format, see [porla-nmea](https://github.com/MO-RISE/porla-nmea). Expects a single argument, the `vessel_id`. Expects input in the form `<epoch> <canboat json output>`.
 
 ### 3rd-party tools
 
-List any 3rd-party command-line tools that this extension bundles
+N/A
 
 ## Usage
 
 ### Examples
+```yaml
+version: '3.8'
+
+services:
+services:
+    source_1:
+        image: ghcr.io/mo-rise/porla
+        network_mode: host
+        restart: always
+        command: ["socat UDP4-RECV:1457,reuseaddr STDOUT | to_bus 1"]
+
+    transform_1:
+        image: ghcr.io/mo-rise/porla-nmea
+        network_mode: host
+        restart: always
+        command: ["from_bus 1 | analyzer --json | timestamp --epoch | to_bus 2"]
+
+    transform_2:
+        image: ghcr.io/mo-rise/porla-pontos
+        network_mode: host
+        restart: always
+        command: ["from_bus 2 | canboat2pontos test_vessel | to_bus 2"]
+
+```
