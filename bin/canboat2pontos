@@ -49,6 +49,13 @@ def handler_127257(data: Dict) -> List[Tuple[str, Dict]]:
     ]
 
 
+def handler_127489(data: Dict) -> List[Tuple[str, Dict]]:
+    """Engine Parameters, Dynamic"""
+    return [
+        (create_topic("enginemain_fuelcons_lph"), abs(data["fields"]["Fuel Rate"])),
+    ]
+
+
 def handler_129026(data: Dict) -> List[Tuple[str, Dict]]:
     """COG & SOG"""
     if data["fields"]["COG Reference"] == "Magnetic":
@@ -73,6 +80,7 @@ HANDLERS = {
     127250: handler_127250,
     127251: handler_127251,
     127257: handler_127257,
+    127489: handler_127489,
     129026: handler_129026,
     129029: handler_129029,
 }
