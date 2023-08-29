@@ -22,10 +22,10 @@ def handler_127245(data: Dict) -> List[Tuple[str, Dict]]:
     """Rudder message"""
     output = []
 
-    if value := data["fields"].get("Position") is not None:
+    if (value := data["fields"].get("Position")) is not None:
         output.append((create_topic("rudder_angle_deg"), value))
 
-    if value := data["fields"].get("Angle Order") is not None:
+    if (value := data["fields"].get("Angle Order")) is not None:
         output.append((create_topic("rudder_order_deg"), value))
 
     return output
