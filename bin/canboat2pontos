@@ -63,7 +63,7 @@ def handler_129026(data: Dict) -> List[Tuple[str, Dict]]:
 
     return [
         (create_topic("positioningsystem_cog_deg"), data["fields"]["COG"]),
-        (create_topic("positioningsystem_sog_kn"), data["fields"]["SOG"]),
+        (create_topic("positioningsystem_sog_kn"), data["fields"]["SOG"] / 0.5144),
     ]
 
 
