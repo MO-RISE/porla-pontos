@@ -56,6 +56,14 @@ def handler_127489(data: Dict) -> List[Tuple[str, Dict]]:
     ]
 
 
+def handler_129025(data: Dict) -> List[Tuple[str, Dict]]:
+    """Position, Rapid Update"""
+    return [
+        (create_topic("positioningsystem_latitude_deg"), data["fields"]["Latitude"]),
+        (create_topic("positioningsystem_longitude_deg"), data["fields"]["Longitude"]),
+    ]
+
+
 def handler_129026(data: Dict) -> List[Tuple[str, Dict]]:
     """COG & SOG"""
     if data["fields"]["COG Reference"] == "Magnetic":
@@ -81,6 +89,7 @@ HANDLERS = {
     127251: handler_127251,
     127257: handler_127257,
     127489: handler_127489,
+    129025: handler_129025,
     129026: handler_129026,
     129029: handler_129029,
 }
