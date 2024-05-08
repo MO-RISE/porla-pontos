@@ -39,6 +39,6 @@ services:
         image: ghcr.io/mo-rise/porla-pontos
         network_mode: host
         restart: always
-        command: ["from_bus 2 | canboat2pontos test_vessel | to_bus 2"]
+        command: ["from_bus 2 | canboat2pontos test_vessel | to_bus 3"]
 
 ```
